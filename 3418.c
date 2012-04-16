@@ -23,7 +23,7 @@ int main()
 		for (j = 0; j < n; j++)
 		{
 			scanf("%d",&b);
-			min = 100;
+			min = 100;  /* the number of different bits of two ints in binary format must smaller than 100 */
 			a = 1000001;
 			for (i = 0; i < m; i++)
 			{
@@ -45,17 +45,20 @@ int main()
 	return 0;
 }
 
+/* return the number of different bits in the binary format of a and b
+ * reference: http://blog.csdn.net/justpub/article/details/2292823
+ */
 int f(int a, int b)
 {
 	int n = 0;
-	int t = a ^ b;
+	int x = a ^ b;
 
-	while (t > 0)
-	{
-		n += (t & 1);
-		t >>= 1;
-	}
+	x = x - ((x >> 1) & 0x55555555);    
+	x = (x & 0x33333333) + ((x >> 2) & 0x33333333);    
+	x = (x + (x >> 4)) & 0x0F0F0F0F;    
+	x = x + (x >> 8);    
+	x = x + (x >> 16);    
+	return x & 0x0000003F;  
 
-	return n;
 }
 
